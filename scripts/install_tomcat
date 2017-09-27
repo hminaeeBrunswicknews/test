@@ -1,0 +1,12 @@
+# Check whether there exists a valid instance
+# of Tomcat7 installed at the specified directory
+[[ -d /usr/local/tomcat7/webapps/ ]] && { service tomcat7 status; } && {
+    echo "Tomcat7 is already installed at $CATALINA_HOME. Skip reinstalling it."
+    exit 0
+}
+#sudo rm -rf /usr/local/tomcat7/apache-tomcat-7.0.78
+if [[ ! -f /usr/local/tomcat7/bin/startup.sh ]]; then
+    sudo wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.78/bin/apache-tomcat-7.0.78.tar.gz
+	sudo tar xzf apache-tomcat-7.0.78.tar.gz
+	sudo mv apache-tomcat-7.0.78/* /usr/local/tomcat7
+fi

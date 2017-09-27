@@ -1,0 +1,84 @@
+#!/bin/bash
+
+set -e
+
+CATALINA_HOME=/usr/share/tomcat7-codedeploy
+
+# Tar file name
+TOMCAT7_CORE_TAR_FILENAME='apache-tomcat-7.0.72.tar.gz'
+# Download URL for Tomcat7 core
+TOMCAT7_CORE_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.72/bin/$TOMCAT7_CORE_TAR_FILENAME"
+# The top-level directory after unpacking the tar file
+TOMCAT7_CORE_UNPACKED_DIRNAME='apache-tomcat-7.0.72'
+
+if [ -f "/tmp/codedeploy-deployment-staging-area/deployment.war" ]
+then
+sudo rm /tmp/codedeploy-deployment-staging-area/deployment.war
+fi
+if [ -f "/tmp/codedeploy-deployment-staging-area/configure_http_port.xsl" ]
+then
+sudo rm /tmp/codedeploy-deployment-staging-area/configure_http_port.xsl
+fi
+
+
+sudo yum -y install wget
+if [ -f jdk-8u131-linux-x64.tar.gz ]
+then
+sudo rm jdk-8u131-linux-x64.tar.gz
+fi
+
+sudo wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz"
+
+
+
+if [ -d /opt/jdk1.8.0_131/ ]
+then
+sudo rm -rf /opt/jdk1.8.0_131/
+fi
+
+sudo tar xzf jdk-8u131-linux-x64.tar.gz -C /opt
+echo "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+#sudo cp jdk1.8.0_131/* /opt/jdk1.8.0_131/
+echo "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+#{ which java; } || {
+#sudo alternatives --install /usr/bin/java java /opt/jdk1.8.0_131/bin/java 2
+#echo "2" | sudo alternatives --config java
+#sudo alternatives --install /usr/bin/jar jar /opt/jdk1.8.0_131/bin/jar 2
+#sudo alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_131/bin/javac 2
+#sudo alternatives --set jar /opt/jdk1.8.0_131/bin/jar
+#sudo alternatives --set javac /opt/jdk1.8.0_131/bin/javac
+#export JAVA_HOME=/opt/jdk1.8.0_131
+#export JRE_HOME=/opt/jdk1.8.0_131/jre
+#export PATH=$PATH:/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin;}
+
+#if [! -d /opt/jdk1.8.0_131/]
+#then
+sudo alternatives --install /usr/bin/java java /opt/jdk1.8.0_131/bin/java 2
+echo "2" | sudo alternatives --config java
+sudo alternatives --install /usr/bin/jar jar /opt/jdk1.8.0_131/bin/jar 2
+sudo alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_131/bin/javac 2
+sudo alternatives --set jar /opt/jdk1.8.0_131/bin/jar
+sudo alternatives --set javac /opt/jdk1.8.0_131/bin/javac
+export JAVA_HOME=/opt/jdk1.8.0_131
+export JRE_HOME=/opt/jdk1.8.0_131/jre
+export PATH=$PATH:/opt/jdk1.8.0_131/bin:/opt/jdk1.8.0_131/jre/bin
+#fi
+
+
+# Clear install directory
+if [ -d /usr/local/tomcat7/webapps/ ]; then
+    rm -rf /usr/local/tomcat7/webapps/
+fi
+mkdir -p /usr/local/tomcat7/webapps/
+
+
+# Download the latest Tomcat7 version
+#cd /tmp
+#sudo wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.78/bin/apache-tomcat-7.0.78.tar.gz
+#sudo tar xzf apache-tomcat-7.0.78.tar.gz
+#sudo mv apache-tomcat-7.0.78 /usr/local/tomcat7
+
+
+
+
+

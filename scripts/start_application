@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e
+
+CATALINA_HOME='/usr/share/tomcat7-codedeploy'
+DEPLOY_TO_ROOT='true'
+#CONTEXT_PATH='##CONTEXT_PATH##'
+SERVER_HTTP_PORT='80'
+
+TEMP_STAGING_DIR='/tmp/deployment/application/ROOT/target/'
+WAR_STAGED_LOCATION="/tmp/deployment/application/ROOT/target/deployment.war"
+HTTP_PORT_CONFIG_XSL_LOCATION="$TEMP_STAGING_DIR/configure_http_port.xsl"
+
+# In Tomcat, ROOT.war maps to the server root
+if [[ "$DEPLOY_TO_ROOT" = 'true' ]]; then
+    CONTEXT_PATH='ROOT'
+fi
+sudo rm -r /usr/share/tomcat8/webapps/*
+# Remove unpacked application artifacts
+#if [[ -f /usr/share/tomcat8/webapps/deployment.war ]]; then
+ #   rm /usr/share/tomcat8/webapps/deployment.war
+#fi
+#if [[ -d /usr/share/tomcat8/webapps/deployment ]]; then
+#    rm -rfv /usr/share/tomcat8/webapps/deployment
+#fi
+
+mkdir /tmp/hamedtest1
+# Copy the WAR file to the webapps directory
+sudo cp $WAR_STAGED_LOCATION /usr/share/tomcat8/webapps
+
+# Configure the Tomcat server HTTP connector
+#{ which xsltproc; } || { yum install xsltproc; } || { apt-get install xsltproc; }
+#cp $CATALINA_HOME/conf/server.xml $CATALINA_HOME/conf/server.xml.bak
+#xsltproc $HTTP_PORT_CONFIG_XSL_LOCATION $CATALINA_HOME/conf/server.xml.bak > $CATALINA_HOME/conf/server.xml
+
+#service tomcat7 start
+#isTomcatStarted=`ps -ef | grep java| grep -v grep | wc -l`
+#if [ $isTomcatStarted > 0 ]; then
+	#echo "Woohoo - the process is there";
+	#sudo /usr/local/tomcat7/./bin/shutdown.sh
+	#sudo /usr/local/tomcat7/./bin/startup.sh
+#else
+	#sudo /usr/local/tomcat7/./bin/startup.sh
+#fi
+
